@@ -8,6 +8,10 @@ import java.util.LinkedList;
  */
 class EventCounterImpl implements EventCounter {
 
+    // if we use EventCounter without synchronized =>
+    // @NotNull
+    // private ConcurrentLinkedQueue<Long> timestamps = new ConcurrentLinkedQueue<>();
+    // else
     @NotNull
     private final LinkedList<Long> timestamps = new LinkedList<>();
 
