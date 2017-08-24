@@ -1,6 +1,7 @@
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * Author: ilya.petrovskiy
@@ -8,19 +9,19 @@ import java.util.LinkedList;
  */
 class EventCounterImpl implements EventCounter {
 
-    // if we use EventCounterImpl without synchronized =>
-    // @NotNull
-    // private ConcurrentLinkedQueue<Long> timestamps = new ConcurrentLinkedQueue<>();
+    // if we use EventCounter without synchronized =>
+//     @NotNull
+//     private Queue<Long> timestamps = new ConcurrentLinkedQueue<>();
     // else
     @NotNull
-    private final LinkedList<Long> timestamps = new LinkedList<>();
+    private final Queue<Long> timestamps = new LinkedList<>();
 
     @Override
     public void registerEvent(@NotNull Object event) {
         // given task does not describe any event handling (except for its counting)...
         // doSomething(event);
         // ...
-        timestamps.addLast(getEventTime());
+        timestamps.add(getEventTime());
 
         // probably should be run in separate thread
         removeRedundancy();
@@ -71,10 +72,9 @@ class EventCounterImpl implements EventCounter {
     private void removeRedundancy() {
         // redundant events
         final long minusDay = getEventTime() - DAY_IN_MILLS;
-        if (timestamps.getFirst() <= minusDay) {
-            for (int i = 0; i < getFirstMoreThan(minusDay); i++) {
-                timestamps.removeFirst();
-            }
+        Long head;
+        while ((head = timestamps.peek()) != null && head <= minusDay) {
+            timestamps.remove();
         }
     }
 
