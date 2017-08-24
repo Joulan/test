@@ -9,7 +9,7 @@ import java.util.Queue;
  */
 class EventCounterImpl implements EventCounter {
 
-    // if we use EventCounter without synchronized =>
+    // if we use EventCounterImpl without synchronized =>
 //     @NotNull
 //     private Queue<Long> timestamps = new ConcurrentLinkedQueue<>();
     // else
